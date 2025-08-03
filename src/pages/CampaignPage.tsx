@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { getCampaignById } from '../services/campaigns';
+import { getCampaignById, joinCampaign } from '../services/campaigns';
 import { Campaign, CampaignPlayer } from '../types';
 import { JoinCampaignModal } from '../components/campaign/JoinCampaignModal';
 import { AchievementManager } from '../components/achievement/AchievementManager';
@@ -62,12 +62,37 @@ export const CampaignPage: React.FC = () => {
     fetchCampaign();
   }, [campaignId, user, isAdminLoggedIn, location.pathname, navigate]);
 
-  const handleJoinCampaign = (characterName: string) => {
-    // TODO: Implement join campaign functionality
-    console.log('Joining campaign with character:', characterName);
-    setShowJoinModal(false);
-    // Redirect to main campaign page after joining
-    navigate(`/campaigns/${campaignId}`);
+  const handleJoinCampaign = async (characterName: string) => {
+    if (!campaignId) return;
+    
+    const currentUser = isAdminLoggedIn ? { uid: 'admin' } : user;
+    if (!currentUser) {
+      setError('You must be logged in to join a campaign');
+      return;
+    }
+
+    try {
+      setError(null); // Clear any previous errors
+      await joinCampaign(campaignId, currentUser.uid, characterName);
+      setShowJoinModal(false);
+      
+      // Show success message briefly
+      const successMessage = `Successfully joined ${campaign?.name} as ${characterName}!`;
+      console.log(successMessage);
+      
+      // Refresh campaign data to show the new player
+      const updatedCampaign = await getCampaignById(campaignId);
+      if (updatedCampaign) {
+        setCampaign(updatedCampaign);
+      }
+      
+      // Redirect to main campaign page after joining
+      navigate(`/campaigns/${campaignId}`);
+    } catch (err) {
+      console.error('Error joining campaign:', err);
+      setError('Failed to join campaign. Please try again.');
+      // Don't close modal on error so user can try again
+    }
   };
 
   const currentUser = isAdminLoggedIn ? { uid: 'admin', displayName: 'Admin User' } : user;
@@ -149,7 +174,7 @@ export const CampaignPage: React.FC = () => {
                 <div className="overview-card">
                   <h3>Campaign Stats</h3>
                   <p>Players: {campaign.players.length}</p>
-                  <p>Achievements: {campaign.achievements.length}</p>
+                  <p>Achievements: {campaign.assignedAchievements.length}</p>
                 </div>
               </div>
             </div>

@@ -22,7 +22,7 @@ export interface Campaign {
   createdAt: Date;
   isActive: boolean;
   players: CampaignPlayer[];
-  achievements: string[];
+  assignedAchievements: string[]; // Global achievement IDs assigned to this campaign
 }
 
 export interface Character {
@@ -41,21 +41,32 @@ export interface AchievementUpgrade {
   points: number;
 }
 
-export interface Achievement {
+// Global achievement template
+export interface GlobalAchievement {
   id: string;
   name: string;
   description: string;
-  campaignId: string;
   basePoints: number;
-  currentLevel: number;
   upgrades: AchievementUpgrade[];
+  createdBy: string; // User ID who created it
   createdAt: Date;
+  isPublic: boolean; // Whether other campaigns can use this achievement
 }
 
+// Achievement assigned to a specific campaign
+export interface CampaignAchievement {
+  id: string;
+  globalAchievementId: string;
+  campaignId: string;
+  assignedBy: string; // DM who assigned it
+  assignedAt: Date;
+}
+
+// Player's progress on an achievement in a specific campaign
 export interface PlayerAchievement {
   id: string;
   playerId: string;
-  achievementId: string;
+  globalAchievementId: string;
   campaignId: string;
   count: number;
   currentLevel: number;

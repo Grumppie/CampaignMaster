@@ -6,10 +6,12 @@ import {
   doc, 
   query,
   where,
-  orderBy 
+  orderBy,
+  updateDoc,
+  arrayUnion
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
-import { Campaign } from '../types';
+import { Campaign, CampaignPlayer } from '../types';
 
 export const createCampaign = async (campaignData: Omit<Campaign, 'id' | 'createdAt'>) => {
   try {
@@ -49,6 +51,29 @@ export const getCampaignById = async (campaignId: string) => {
     }
     return null;
   } catch (error) {
+    throw error;
+  }
+};
+
+export const joinCampaign = async (campaignId: string, userId: string, characterName: string) => {
+  try {
+    const campaignRef = doc(db, 'campaigns', campaignId);
+    
+    // Create the new player object
+    const newPlayer: CampaignPlayer = {
+      userId,
+      characterName,
+      joinedAt: new Date()
+    };
+    
+    // Add the player to the campaign's players array
+    await updateDoc(campaignRef, {
+      players: arrayUnion(newPlayer)
+    });
+    
+    return true;
+  } catch (error) {
+    console.error('Error joining campaign:', error);
     throw error;
   }
 }; 

@@ -1,9 +1,9 @@
 import React from 'react';
-import { Achievement } from '../../types';
+import { GlobalAchievement } from '../../types';
 import './AchievementCard.css';
 
 interface AchievementCardProps {
-  achievement: Achievement;
+  achievement: GlobalAchievement;
   isDM: boolean;
   onIncrement: (achievementId: string, playerId: string) => void;
   onDecrement: (achievementId: string, playerId: string) => void;
@@ -15,47 +15,23 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({
   onIncrement,
   onDecrement
 }) => {
-  const getCurrentLevelInfo = () => {
-    if (achievement.currentLevel === 0) {
-      return {
-        name: achievement.name,
-        description: achievement.description,
-        points: achievement.basePoints
-      };
-    }
-    
-    const currentUpgrade = achievement.upgrades.find(
-      upgrade => upgrade.requiredCount === achievement.currentLevel
-    );
-    
-    return currentUpgrade || {
-      name: achievement.name,
-      description: achievement.description,
-      points: achievement.basePoints
-    };
-  };
-
-  const currentLevel = getCurrentLevelInfo();
-
   return (
     <div className="achievement-card">
       <div className="achievement-header">
-        <h3 className="achievement-title">{currentLevel.name}</h3>
-        <div className="achievement-level">
-          Level {achievement.currentLevel}
-        </div>
+        <h3 className="achievement-title">{achievement.name}</h3>
+        <div className="achievement-type">Global Achievement</div>
       </div>
       
-      <p className="achievement-description">{currentLevel.description}</p>
+      <p className="achievement-description">{achievement.description}</p>
       
       <div className="achievement-stats">
         <div className="stat">
-          <span className="stat-label">Points:</span>
-          <span className="stat-value">{currentLevel.points}</span>
+          <span className="stat-label">Base Points:</span>
+          <span className="stat-value">{achievement.basePoints}</span>
         </div>
         <div className="stat">
-          <span className="stat-label">Progress:</span>
-          <span className="stat-value">{achievement.currentLevel}</span>
+          <span className="stat-label">Upgrades:</span>
+          <span className="stat-value">{achievement.upgrades.length}</span>
         </div>
       </div>
 
@@ -66,7 +42,7 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({
             {achievement.upgrades.map((upgrade, index) => (
               <div 
                 key={upgrade.id} 
-                className={`upgrade-item ${achievement.currentLevel >= upgrade.requiredCount ? 'completed' : ''}`}
+                className="upgrade-item"
               >
                 <span className="upgrade-name">{upgrade.name}</span>
                 <span className="upgrade-requirement">

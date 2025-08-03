@@ -62,7 +62,8 @@ export const CampaignCreate: React.FC = () => {
         dmName: currentUser.displayName,
         isActive: true,
         players: [],
-        achievements: []
+        achievements: [],
+        assignedAchievements: []
       };
 
       const campaignId = await createCampaign(campaignData);

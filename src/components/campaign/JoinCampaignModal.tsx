@@ -16,6 +16,7 @@ export const JoinCampaignModal: React.FC<JoinCampaignModalProps> = ({
   const [characterName, setCharacterName] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +39,10 @@ export const JoinCampaignModal: React.FC<JoinCampaignModalProps> = ({
     try {
       setIsLoading(true);
       setError(null);
+      setIsSuccess(false);
       await onJoin(characterName.trim());
+      setIsSuccess(true);
+      // Modal will be closed by parent component
     } catch (err) {
       setError('Failed to join campaign. Please try again.');
     } finally {
@@ -81,21 +85,27 @@ export const JoinCampaignModal: React.FC<JoinCampaignModalProps> = ({
               </div>
             )}
 
+            {isSuccess && (
+              <div className="success-message">
+                Successfully joined campaign! Redirecting...
+              </div>
+            )}
+
             <div className="form-actions">
               <button
                 type="button"
                 onClick={onClose}
                 className="btn-secondary"
-                disabled={isLoading}
+                disabled={isLoading || isSuccess}
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 className="btn-primary"
-                disabled={isLoading}
+                disabled={isLoading || isSuccess}
               >
-                {isLoading ? 'Joining...' : 'Join Campaign'}
+                {isLoading ? 'Joining...' : isSuccess ? 'Success!' : 'Join Campaign'}
               </button>
             </div>
           </form>

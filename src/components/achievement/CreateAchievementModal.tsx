@@ -3,18 +3,16 @@ import { AchievementUpgrade } from '../../types';
 import './CreateAchievementModal.css';
 
 interface CreateAchievementModalProps {
-  campaignId: string;
   onCreate: (achievementData: {
     name: string;
     description: string;
     basePoints: number;
-    upgrades: AchievementUpgrade[];
+    upgrades: Omit<AchievementUpgrade, 'id'>[];
   }) => void;
   onClose: () => void;
 }
 
 export const CreateAchievementModal: React.FC<CreateAchievementModalProps> = ({
-  campaignId,
   onCreate,
   onClose
 }) => {
