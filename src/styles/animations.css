@@ -1,0 +1,101 @@
+/* Dice Rolling Animation */
+@keyframes diceRoll {
+  0% { transform: rotateX(0deg) rotateY(0deg); }
+  25% { transform: rotateX(360deg) rotateY(180deg); }
+  50% { transform: rotateX(720deg) rotateY(360deg); }
+  75% { transform: rotateX(1080deg) rotateY(540deg); }
+  100% { transform: rotateX(1440deg) rotateY(720deg); }
+}
+
+.dice-roll {
+  animation: diceRoll 1.5s ease-out;
+}
+
+/* Achievement Unlock Animation */
+@keyframes achievementUnlock {
+  0% { 
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  50% { 
+    transform: scale(1.2) rotate(0deg);
+    opacity: 1;
+  }
+  100% { 
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.achievement-unlock {
+  animation: achievementUnlock 0.8s ease-out;
+}
+
+/* Page Transition */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page-transition {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Hover Effects */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Loading Spinner */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Button Hover Effects */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-purple), var(--accent-blue));
+  border: none;
+  color: var(--light-text);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(45, 27, 105, 0.4);
+}
+
+/* Card Animations */
+.card-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.card-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Magic Sparkle Effect */
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+.sparkle {
+  animation: sparkle 1.5s ease-in-out infinite;
+} 

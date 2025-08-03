@@ -1,0 +1,60 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* DnD Color Palette - Updated to match reference image */
+  --primary-purple: #1a0b2e; /* Darker purple base */
+  --secondary-gold: #d4af37; /* Keep golden accent */
+  --accent-blue: #2d1b69; /* Deeper purple-blue */
+  --dark-bg: #0a0517; /* Very dark purple background */
+  --light-text: #f8fafc; /* Keep light text */
+  --card-bg: rgba(26, 11, 46, 0.8); /* Semi-transparent dark purple */
+  --border-color: #3d2b5a; /* Darker purple border */
+  
+  /* Additional colors for gradient effects */
+  --gradient-start: #1a0b2e; /* Dark purple */
+  --gradient-end: #2d1b69; /* Deeper purple-blue */
+  --gold-gradient-start: #d4af37; /* Golden */
+  --gold-gradient-end: #fbbf24; /* Lighter gold */
+  
+  /* Typography */
+  --font-fantasy: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  color: var(--light-text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-fantasy);
+  color: var(--secondary-gold);
+} 

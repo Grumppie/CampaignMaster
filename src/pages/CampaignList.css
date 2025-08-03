@@ -1,0 +1,119 @@
+.campaign-list {
+  min-height: calc(100vh - 80px);
+  background: var(--dark-bg);
+  padding: var(--spacing-xl);
+}
+
+.campaign-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.campaign-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.campaign-list-header h1 {
+  color: var(--secondary-gold);
+  margin: 0;
+}
+
+.create-campaign-btn {
+  background: linear-gradient(135deg, var(--secondary-gold), #f4d03f);
+  color: var(--dark-bg);
+  text-decoration: none;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.create-campaign-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+  border-color: var(--light-text);
+}
+
+.campaigns-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: var(--spacing-md);
+}
+
+.loading-container p {
+  color: var(--light-text);
+  font-size: 1.1rem;
+}
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: var(--spacing-lg);
+  text-align: center;
+}
+
+.error-container h2 {
+  color: #e74c3c;
+}
+
+.error-container button {
+  background: var(--accent-blue);
+  color: var(--light-text);
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-xl);
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+}
+
+.empty-state h3 {
+  color: var(--secondary-gold);
+  margin-bottom: var(--spacing-md);
+}
+
+.empty-state p {
+  color: var(--light-text);
+  margin-bottom: var(--spacing-lg);
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .campaign-list {
+    padding: var(--spacing-md);
+  }
+  
+  .campaign-list-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .campaigns-grid {
+    grid-template-columns: 1fr;
+  }
+} 

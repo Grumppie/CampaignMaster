@@ -1,0 +1,109 @@
+.achievement-manager {
+  padding: var(--spacing-lg);
+}
+
+.achievement-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.achievement-header h2 {
+  margin: 0;
+  color: var(--secondary-gold);
+  font-family: var(--font-fantasy);
+}
+
+.create-achievement-btn {
+  background: linear-gradient(135deg, var(--gold-gradient-start), var(--gold-gradient-end));
+  border: 1px solid var(--secondary-gold);
+  color: var(--dark-bg);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.create-achievement-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.error-message {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  font-size: 0.9rem;
+}
+
+.empty-achievements {
+  text-align: center;
+  padding: var(--spacing-xxl);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  margin: var(--spacing-lg) 0;
+}
+
+.empty-achievements h3 {
+  color: var(--secondary-gold);
+  margin-bottom: var(--spacing-md);
+  font-family: var(--font-fantasy);
+}
+
+.empty-achievements p {
+  color: var(--light-text);
+  opacity: 0.8;
+  margin-bottom: var(--spacing-lg);
+}
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xxl);
+  color: var(--light-text);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-color);
+  border-top: 3px solid var(--secondary-gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: var(--spacing-md);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .achievement-header {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: stretch;
+  }
+  
+  .achievements-grid {
+    grid-template-columns: 1fr;
+  }
+} 

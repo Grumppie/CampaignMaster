@@ -1,0 +1,201 @@
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+import { getCampaignById } from '../services/campaigns';
+import { Campaign, CampaignPlayer } from '../types';
+import { JoinCampaignModal } from '../components/campaign/JoinCampaignModal';
+import { AchievementManager } from '../components/achievement/AchievementManager';
+import './CampaignPage.css';
+
+export const CampaignPage: React.FC = () => {
+  const { campaignId } = useParams<{ campaignId: string }>();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+  const [campaign, setCampaign] = useState<Campaign | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showJoinModal, setShowJoinModal] = useState(false);
+  const [activeTab, setActiveTab] = useState<'overview' | 'achievements' | 'players'>('overview');
+
+  // Check for admin login on component mount
+  useEffect(() => {
+    const adminLoggedIn = localStorage.getItem('adminLoggedIn');
+    if (adminLoggedIn === 'true') {
+      setIsAdminLoggedIn(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchCampaign = async () => {
+      if (!campaignId) return;
+      
+      try {
+        setLoading(true);
+        const campaignData = await getCampaignById(campaignId);
+        setCampaign(campaignData);
+        
+        // Check if user should see join modal
+        const currentUser = isAdminLoggedIn ? { uid: 'admin' } : user;
+        if (currentUser && campaignData) {
+          const isInCampaign = campaignData.players.some(player => player.userId === currentUser.uid);
+          const isDM = campaignData.dmId === currentUser.uid;
+          const isOnJoinRoute = location.pathname.includes('/join');
+          
+          // Show join modal if user is on join route and not in campaign and not DM
+          if (isOnJoinRoute && !isInCampaign && !isDM) {
+            setShowJoinModal(true);
+          } else if (!isInCampaign && !isDM && !isOnJoinRoute) {
+            // If user is not in campaign and not on join route, redirect to join
+            navigate(`/campaigns/${campaignId}/join`);
+          }
+        }
+      } catch (err) {
+        setError('Failed to load campaign');
+        console.error('Error fetching campaign:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCampaign();
+  }, [campaignId, user, isAdminLoggedIn, location.pathname, navigate]);
+
+  const handleJoinCampaign = (characterName: string) => {
+    // TODO: Implement join campaign functionality
+    console.log('Joining campaign with character:', characterName);
+    setShowJoinModal(false);
+    // Redirect to main campaign page after joining
+    navigate(`/campaigns/${campaignId}`);
+  };
+
+  const currentUser = isAdminLoggedIn ? { uid: 'admin', displayName: 'Admin User' } : user;
+  const isDM = campaign?.dmId === currentUser?.uid;
+  const isPlayer = campaign?.players.some(player => player.userId === currentUser?.uid);
+
+  if (loading) {
+    return (
+      <div className="campaign-page page-transition">
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>Loading campaign...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !campaign) {
+    return (
+      <div className="campaign-page page-transition">
+        <div className="error-container">
+          <h2>Error</h2>
+          <p>{error || 'Campaign not found'}</p>
+          <button onClick={() => navigate('/campaigns')}>Back to Campaigns</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="campaign-page page-transition">
+      <div className="campaign-page-container">
+        {/* Campaign Header */}
+        <div className="campaign-header">
+          <div className="campaign-title-section">
+            <h1>{campaign.name}</h1>
+            <p className="campaign-description">{campaign.description}</p>
+            <div className="campaign-meta">
+              <span className="dm-info">DM: {campaign.dmName}</span>
+              <span className="player-count">{campaign.players.length} players</span>
+              {isDM && <span className="dm-badge">You are the DM</span>}
+              {isPlayer && !isDM && <span className="player-badge">You are a player</span>}
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation Tabs */}
+        <div className="campaign-tabs">
+          <button 
+            className={`tab-btn ${activeTab === 'overview' ? 'active' : ''}`}
+            onClick={() => setActiveTab('overview')}
+          >
+            Overview
+          </button>
+          <button 
+            className={`tab-btn ${activeTab === 'players' ? 'active' : ''}`}
+            onClick={() => setActiveTab('players')}
+          >
+            Players ({campaign.players.length})
+          </button>
+          <button 
+            className={`tab-btn ${activeTab === 'achievements' ? 'active' : ''}`}
+            onClick={() => setActiveTab('achievements')}
+          >
+            Achievements
+          </button>
+        </div>
+
+        {/* Tab Content */}
+        <div className="tab-content">
+          {activeTab === 'overview' && (
+            <div className="overview-tab">
+              <h2>Campaign Overview</h2>
+              <div className="overview-grid">
+                <div className="overview-card">
+                  <h3>Recent Activity</h3>
+                  <p>No recent activity</p>
+                </div>
+                <div className="overview-card">
+                  <h3>Campaign Stats</h3>
+                  <p>Players: {campaign.players.length}</p>
+                  <p>Achievements: {campaign.achievements.length}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'players' && (
+            <div className="players-tab">
+              <h2>Campaign Players</h2>
+              <div className="players-list">
+                {campaign.players.map((player: CampaignPlayer) => (
+                  <div key={player.userId} className="player-card">
+                    <div className="player-info">
+                      <span className="player-name">{player.characterName}</span>
+                      <span className="join-date">
+                        Joined: {new Date(player.joinedAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+                {campaign.players.length === 0 && (
+                  <p className="no-players">No players have joined yet.</p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'achievements' && (
+            <div className="achievements-tab">
+              <AchievementManager 
+                campaignId={campaign.id}
+                isDM={isDM}
+                currentUserId={currentUser?.uid}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Join Campaign Modal */}
+      {showJoinModal && (
+        <JoinCampaignModal
+          campaign={campaign}
+          onJoin={handleJoinCampaign}
+          onClose={() => setShowJoinModal(false)}
+        />
+      )}
+    </div>
+  );
+}; 
