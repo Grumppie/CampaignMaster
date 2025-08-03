@@ -128,6 +128,18 @@ export const assignAchievementToCampaign = async (
   assignedBy: string
 ) => {
   try {
+    // Check if achievement is already assigned to this campaign
+    const existingQuery = query(
+      collection(db, 'campaignAchievements'),
+      where('globalAchievementId', '==', globalAchievementId),
+      where('campaignId', '==', campaignId)
+    );
+    const existingSnapshot = await getDocs(existingQuery);
+    
+    if (!existingSnapshot.empty) {
+      throw new Error('Achievement is already assigned to this campaign');
+    }
+
     // Create campaign achievement record
     await addDoc(collection(db, 'campaignAchievements'), {
       globalAchievementId,
@@ -145,6 +157,46 @@ export const assignAchievementToCampaign = async (
     return true;
   } catch (error) {
     console.error('Error assigning achievement to campaign:', error);
+    throw error;
+  }
+};
+
+// Assign an achievement directly to a player
+export const assignAchievementToPlayer = async (
+  globalAchievementId: string,
+  playerId: string,
+  campaignId: string,
+  assignedBy: string
+) => {
+  try {
+    // Check if player already has this achievement
+    const existingQuery = query(
+      collection(db, 'playerAchievements'),
+      where('playerId', '==', playerId),
+      where('globalAchievementId', '==', globalAchievementId),
+      where('campaignId', '==', campaignId)
+    );
+    const existingSnapshot = await getDocs(existingQuery);
+    
+    if (!existingSnapshot.empty) {
+      throw new Error('Player already has this achievement');
+    }
+
+    // Create player achievement record
+    await addDoc(collection(db, 'playerAchievements'), {
+      playerId,
+      globalAchievementId,
+      campaignId,
+      count: 0,
+      currentLevel: 0,
+      lastUpdated: new Date(),
+      assignedBy,
+      assignedAt: new Date()
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Error assigning achievement to player:', error);
     throw error;
   }
 };

@@ -33,10 +33,18 @@ export const getCampaigns = async () => {
       orderBy('createdAt', 'desc')
     );
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    })) as Campaign[];
+    return querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        createdAt: data.createdAt?.toDate() || new Date(),
+        players: data.players?.map((player: any) => ({
+          ...player,
+          joinedAt: player.joinedAt?.toDate() || new Date()
+        })) || []
+      };
+    }) as Campaign[];
   } catch (error) {
     throw error;
   }
@@ -47,7 +55,16 @@ export const getCampaignById = async (campaignId: string) => {
     const docRef = doc(db, 'campaigns', campaignId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() } as Campaign;
+      const data = docSnap.data();
+      return { 
+        id: docSnap.id, 
+        ...data,
+        createdAt: data.createdAt?.toDate() || new Date(),
+        players: data.players?.map((player: any) => ({
+          ...player,
+          joinedAt: player.joinedAt?.toDate() || new Date()
+        })) || []
+      } as Campaign;
     }
     return null;
   } catch (error) {

@@ -71,4 +71,6 @@ export interface PlayerAchievement {
   count: number;
   currentLevel: number;
   lastUpdated: Date;
+  assignedBy?: string; // DM who assigned it to the player
+  assignedAt?: Date; // When it was assigned to the player
 } 

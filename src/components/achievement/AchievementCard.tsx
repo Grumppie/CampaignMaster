@@ -20,6 +20,7 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({
       <div className="achievement-header">
         <h3 className="achievement-title">{achievement.name}</h3>
         <div className="achievement-type">Global Achievement</div>
+        <div className="achievement-id">ID: {achievement.id}</div>
       </div>
       
       <p className="achievement-description">{achievement.description}</p>
@@ -32,6 +33,10 @@ export const AchievementCard: React.FC<AchievementCardProps> = ({
         <div className="stat">
           <span className="stat-label">Upgrades:</span>
           <span className="stat-value">{achievement.upgrades.length}</span>
+        </div>
+        <div className="stat">
+          <span className="stat-label">Created:</span>
+          <span className="stat-value">{achievement.createdAt.toLocaleDateString()}</span>
         </div>
       </div>
 

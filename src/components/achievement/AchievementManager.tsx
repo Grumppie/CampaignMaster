@@ -100,8 +100,9 @@ export const AchievementManager: React.FC<AchievementManagerProps> = ({
       setCampaignAchievements(assignedAchievements.filter(Boolean) as (CampaignAchievement & { globalAchievement: GlobalAchievement })[]);
       
       setShowAssignModal(false);
-    } catch (err) {
-      setError('Failed to assign achievement');
+    } catch (err: any) {
+      const errorMessage = err.message || 'Failed to assign achievement';
+      setError(errorMessage);
       console.error('Error assigning achievement:', err);
     }
   };
@@ -128,7 +129,12 @@ export const AchievementManager: React.FC<AchievementManagerProps> = ({
   return (
     <div className="achievement-manager">
       <div className="achievement-header">
-        <h2>Achievements</h2>
+        <div className="header-content">
+          <h2>Campaign Achievements</h2>
+          <p className="header-description">
+            Global achievements assigned to this campaign. These can be assigned to individual players.
+          </p>
+        </div>
         {isDM && (
           <div className="achievement-actions">
             <button 
@@ -165,17 +171,29 @@ export const AchievementManager: React.FC<AchievementManagerProps> = ({
           )}
         </div>
       ) : (
-        <div className="achievements-grid">
-          {campaignAchievements.map((campaignAchievement) => (
-            <AchievementCard
-              key={campaignAchievement.id}
-              achievement={campaignAchievement.globalAchievement}
-              isDM={isDM}
-              onIncrement={handleIncrementAchievement}
-              onDecrement={handleDecrementAchievement}
-            />
-          ))}
-        </div>
+        <>
+          {/* Debug Info - Only show in development */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="debug-info">
+              <h4>Debug Information</h4>
+              <p>Showing {campaignAchievements.length} global achievements assigned to this campaign.</p>
+              <p>Each card below shows a global achievement that has been assigned to this campaign.</p>
+              <p>The achievement IDs shown are the global achievement IDs, not campaign achievement document IDs.</p>
+            </div>
+          )}
+          
+          <div className="achievements-grid">
+            {campaignAchievements.map((campaignAchievement) => (
+              <AchievementCard
+                key={campaignAchievement.id}
+                achievement={campaignAchievement.globalAchievement}
+                isDM={isDM}
+                onIncrement={handleIncrementAchievement}
+                onDecrement={handleDecrementAchievement}
+              />
+            ))}
+          </div>
+        </>
       )}
       
       {showCreateModal && (

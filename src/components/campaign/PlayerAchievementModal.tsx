@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CampaignPlayer, GlobalAchievement, PlayerAchievement } from '../../types';
 import { 
   getGlobalAchievements, 
-  assignAchievementToCampaign,
+  assignAchievementToPlayer,
   incrementPlayerAchievement,
   decrementPlayerAchievement,
   getPlayerAchievements
@@ -62,7 +62,7 @@ export const PlayerAchievementModal: React.FC<PlayerAchievementModalProps> = ({
 
     try {
       setError(null);
-      await assignAchievementToCampaign(selectedAchievement, campaignId, currentUserId);
+      await assignAchievementToPlayer(selectedAchievement, player.userId, campaignId, currentUserId);
       
       // Refresh player achievements
       const achievements = await getPlayerAchievements(player.userId, campaignId);
@@ -70,8 +70,9 @@ export const PlayerAchievementModal: React.FC<PlayerAchievementModalProps> = ({
       
       setSelectedAchievement('');
       onUpdate();
-    } catch (err) {
-      setError('Failed to assign achievement');
+    } catch (err: any) {
+      const errorMessage = err.message || 'Failed to assign achievement';
+      setError(errorMessage);
       console.error('Error assigning achievement:', err);
     }
   };

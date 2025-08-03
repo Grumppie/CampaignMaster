@@ -5,16 +5,28 @@
 .achievement-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: var(--spacing-xl);
   padding-bottom: var(--spacing-md);
   border-bottom: 1px solid var(--border-color);
 }
 
+.header-content {
+  flex: 1;
+}
+
 .achievement-header h2 {
-  margin: 0;
+  margin: 0 0 var(--spacing-sm) 0;
   color: var(--secondary-gold);
   font-family: var(--font-fantasy);
+}
+
+.header-description {
+  color: var(--light-text);
+  opacity: 0.8;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
 }
 
 .achievement-actions {
@@ -97,6 +109,27 @@
   border-radius: var(--radius-md);
   margin-bottom: var(--spacing-lg);
   font-size: 0.9rem;
+}
+
+.debug-info {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #93c5fd;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  font-size: 0.9rem;
+}
+
+.debug-info h4 {
+  color: #60a5fa;
+  margin: 0 0 var(--spacing-sm) 0;
+  font-family: var(--font-fantasy);
+}
+
+.debug-info p {
+  margin: var(--spacing-xs) 0;
+  opacity: 0.9;
 }
 
 .empty-achievements {
