@@ -149,23 +149,46 @@
   margin: 0;
 }
 
+.players-tab {
+  padding: var(--spacing-lg);
+}
+
+.players-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.players-header h2 {
+  margin: 0;
+  color: var(--secondary-gold);
+  font-family: var(--font-fantasy);
+}
+
 .players-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: var(--spacing-md);
 }
 
 .player-card {
-  background: rgba(26, 11, 46, 0.5);
+  background: var(--card-bg);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   transition: all 0.3s ease;
 }
 
 .player-card:hover {
-  border-color: var(--secondary-gold);
   transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border-color: var(--secondary-gold);
 }
 
 .player-info {
@@ -182,17 +205,49 @@
 
 .join-date {
   color: var(--light-text);
-  opacity: 0.7;
+  opacity: 0.8;
   font-size: 0.9rem;
 }
 
-.no-players {
+.player-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.player-action-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
   color: var(--light-text);
-  opacity: 0.6;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.player-action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--secondary-gold);
+  color: var(--secondary-gold);
+}
+
+.no-players {
   text-align: center;
+  color: var(--light-text);
+  opacity: 0.7;
   font-style: italic;
-  grid-column: 1 / -1;
   padding: var(--spacing-xl);
+}
+
+.error-message {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  font-size: 0.9rem;
 }
 
 .loading-container,

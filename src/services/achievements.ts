@@ -62,12 +62,17 @@ export const getGlobalAchievements = async (userId?: string) => {
     }
     
     const querySnapshot = await getDocs(q);
-    const achievements = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    })) as GlobalAchievement[];
+    const achievements: GlobalAchievement[] = [];
 
-    // If user is provided, also get their private achievements
+    const publicAchievements = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+      createdAt: doc.data().createdAt?.toDate() || new Date()
+    })) as GlobalAchievement[];
+    
+    achievements.push(...publicAchievements);
+
+    // Get private achievements created by the user
     if (userId) {
       const privateQuery = query(
         collection(db, 'globalAchievements'),
@@ -75,15 +80,21 @@ export const getGlobalAchievements = async (userId?: string) => {
         where('isPublic', '==', false)
       );
       const privateSnapshot = await getDocs(privateQuery);
+      
       const privateAchievements = privateSnapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
+        createdAt: doc.data().createdAt?.toDate() || new Date()
       })) as GlobalAchievement[];
       
       achievements.push(...privateAchievements);
     }
 
-    return achievements.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    return achievements.sort((a, b) => {
+      const dateA = a.createdAt instanceof Date ? a.createdAt : new Date(a.createdAt);
+      const dateB = b.createdAt instanceof Date ? b.createdAt : new Date(b.createdAt);
+      return dateB.getTime() - dateA.getTime();
+    });
   } catch (error) {
     console.error('Error fetching global achievements:', error);
     throw error;
@@ -96,7 +107,12 @@ export const getGlobalAchievementById = async (achievementId: string) => {
     const docRef = doc(db, 'globalAchievements', achievementId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() } as GlobalAchievement;
+      const data = docSnap.data();
+      return { 
+        id: docSnap.id, 
+        ...data,
+        createdAt: data.createdAt?.toDate() || new Date()
+      } as GlobalAchievement;
     }
     return null;
   } catch (error) {
@@ -144,7 +160,8 @@ export const getCampaignAchievements = async (campaignId: string) => {
     
     const campaignAchievements = querySnapshot.docs.map(doc => ({
       id: doc.id,
-      ...doc.data()
+      ...doc.data(),
+      assignedAt: doc.data().assignedAt?.toDate() || new Date()
     })) as CampaignAchievement[];
 
     // Get the actual global achievement data for each assigned achievement
@@ -174,7 +191,8 @@ export const getPlayerAchievements = async (playerId: string, campaignId: string
     
     const playerAchievements = querySnapshot.docs.map(doc => ({
       id: doc.id,
-      ...doc.data()
+      ...doc.data(),
+      lastUpdated: doc.data().lastUpdated?.toDate() || new Date()
     })) as PlayerAchievement[];
 
     // Get the actual global achievement data for each player achievement

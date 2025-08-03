@@ -1,0 +1,268 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: var(--card-bg);
+  border: 2px solid var(--secondary-gold);
+  border-radius: var(--radius-lg);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+  background: linear-gradient(135deg, var(--primary-purple), var(--accent-blue));
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: var(--secondary-gold);
+  font-family: var(--font-fantasy);
+  font-size: 1.5rem;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: var(--light-text);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--secondary-gold);
+}
+
+.modal-body {
+  padding: var(--spacing-lg);
+}
+
+.error-message {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  font-size: 0.9rem;
+}
+
+.assign-section {
+  margin-bottom: var(--spacing-xl);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.assign-section h3 {
+  color: var(--secondary-gold);
+  font-family: var(--font-fantasy);
+  margin-bottom: var(--spacing-md);
+  font-size: 1.2rem;
+}
+
+.assign-controls {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.achievement-select {
+  flex: 1;
+  background: var(--dark-bg);
+  border: 1px solid var(--border-color);
+  color: var(--light-text);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+}
+
+.achievement-select:focus {
+  outline: none;
+  border-color: var(--secondary-gold);
+}
+
+.assign-btn {
+  background: linear-gradient(135deg, var(--gold-gradient-start), var(--gold-gradient-end));
+  border: 1px solid var(--secondary-gold);
+  color: var(--dark-bg);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.assign-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.assign-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.current-achievements h3 {
+  color: var(--secondary-gold);
+  font-family: var(--font-fantasy);
+  margin-bottom: var(--spacing-md);
+  font-size: 1.2rem;
+}
+
+.no-achievements {
+  text-align: center;
+  color: var(--light-text);
+  opacity: 0.7;
+  font-style: italic;
+  padding: var(--spacing-lg);
+}
+
+.achievements-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.player-achievement-card {
+  background: rgba(26, 11, 46, 0.5);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.player-achievement-card:hover {
+  border-color: var(--secondary-gold);
+  transform: translateY(-2px);
+}
+
+.achievement-info {
+  flex: 1;
+}
+
+.achievement-info h4 {
+  color: var(--secondary-gold);
+  margin: 0 0 var(--spacing-sm) 0;
+  font-family: var(--font-fantasy);
+  font-size: 1.1rem;
+}
+
+.current-level,
+.achievement-count,
+.next-level {
+  color: var(--light-text);
+  margin: var(--spacing-xs) 0;
+  font-size: 0.9rem;
+}
+
+.next-level {
+  color: var(--accent-blue);
+  font-weight: 500;
+}
+
+.achievement-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.control-btn {
+  background: var(--dark-bg);
+  border: 1px solid var(--border-color);
+  color: var(--light-text);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-btn:hover {
+  border-color: var(--secondary-gold);
+  color: var(--secondary-gold);
+}
+
+.control-btn.increment:hover {
+  background: rgba(34, 197, 94, 0.2);
+}
+
+.control-btn.decrement:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.count-display {
+  color: var(--secondary-gold);
+  font-weight: 600;
+  font-size: 1.1rem;
+  min-width: 40px;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-color);
+  border-top: 3px solid var(--secondary-gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto var(--spacing-md);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    max-height: 90vh;
+  }
+  
+  .assign-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .player-achievement-card {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: stretch;
+  }
+  
+  .achievement-controls {
+    justify-content: center;
+  }
+} 

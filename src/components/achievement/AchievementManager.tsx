@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { GlobalAchievement, CampaignAchievement, PlayerAchievement } from '../../types';
 import { 
   getCampaignAchievements, 
-  getGlobalAchievements, 
+  getGlobalAchievements,
   assignAchievementToCampaign,
   createGlobalAchievement 
 } from '../../services/achievements';
 import { CreateAchievementModal } from './CreateAchievementModal';
+import { AssignAchievementModal } from './AssignAchievementModal';
 import { AchievementCard } from './AchievementCard';
 import './AchievementManager.css';
-import { AssignAchievementModal } from './AssignAchievementModal';
 
 interface AchievementManagerProps {
   campaignId: string;
@@ -40,8 +40,10 @@ export const AchievementManager: React.FC<AchievementManagerProps> = ({
         setCampaignAchievements(assignedAchievements.filter(Boolean) as (CampaignAchievement & { globalAchievement: GlobalAchievement })[]);
         
         // Fetch available global achievements for assignment
-        const globalAchievements = await getGlobalAchievements(currentUserId);
-        setAvailableAchievements(globalAchievements);
+        if (currentUserId) {
+          const globalAchievements = await getGlobalAchievements(currentUserId);
+          setAvailableAchievements(globalAchievements);
+        }
       } catch (err) {
         setError('Failed to load achievements');
         console.error('Error fetching achievements:', err);
