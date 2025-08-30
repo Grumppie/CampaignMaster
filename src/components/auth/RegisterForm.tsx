@@ -90,8 +90,13 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
       return false;
     }
 
-    // Check if all fields are filled
-    if (!formData.username || !formData.email || !formData.password || !formData.displayName) {
+    // Check if all fields are filled (after trimming)
+    const trimmedUsername = formData.username.trim();
+    const trimmedEmail = formData.email.trim();
+    const trimmedPassword = formData.password.trim();
+    const trimmedDisplayName = formData.displayName.trim();
+    
+    if (!trimmedUsername || !trimmedEmail || !trimmedPassword || !trimmedDisplayName) {
       setError('Please fill in all fields');
       return false;
     }
@@ -102,6 +107,18 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Trim all form data
+    const trimmedData = {
+      username: formData.username.trim(),
+      email: formData.email.trim(),
+      password: formData.password.trim(),
+      confirmPassword: formData.confirmPassword.trim(),
+      displayName: formData.displayName.trim()
+    };
+    
+    // Update form data with trimmed values
+    setFormData(trimmedData);
+    
     if (!validateForm()) {
       return;
     }
@@ -111,10 +128,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
 
     try {
       await registerWithEmailAndPassword(
-        formData.username,
-        formData.email,
-        formData.password,
-        formData.displayName
+        trimmedData.username,
+        trimmedData.email,
+        trimmedData.password,
+        trimmedData.displayName
       );
       onSuccess?.();
     } catch (err: any) {

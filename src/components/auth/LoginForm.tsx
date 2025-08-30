@@ -34,7 +34,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
     setError('');
 
     try {
-      await signInWithUsernameOrEmail(formData.identifier, formData.password);
+      const trimmedIdentifier = formData.identifier.trim();
+      const trimmedPassword = formData.password.trim();
+      
+      if (!trimmedIdentifier || !trimmedPassword) {
+        setError('Please fill in all fields.');
+        return;
+      }
+      
+      await signInWithUsernameOrEmail(trimmedIdentifier, trimmedPassword);
       onSuccess?.();
     } catch (err: any) {
       setError(err.message || 'Login failed. Please try again.');
@@ -63,7 +71,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
     setResetMessage('');
 
     try {
-      await resetPassword(resetEmail);
+      const trimmedEmail = resetEmail.trim();
+      
+      if (!trimmedEmail) {
+        setResetMessage('Please enter a valid email address.');
+        return;
+      }
+      
+      await resetPassword(trimmedEmail);
       setResetMessage('Password reset email sent! Check your inbox.');
       setResetEmail('');
     } catch (err: any) {
