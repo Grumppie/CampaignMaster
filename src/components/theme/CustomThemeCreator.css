@@ -16,10 +16,10 @@
   background: var(--surface-color);
   border: 2px solid var(--accent-color);
   border-radius: 16px;
-  padding: 2rem;
-  max-width: 800px;
-  width: 90%;
-  max-height: 90vh;
+  padding: 1rem;
+  max-width: 1000px;
+  width: 95%;
+  max-height: 80vh;
   overflow-y: auto;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
@@ -171,14 +171,16 @@
   font-size: 0.9rem;
 }
 
+/* Theme Preview Container */
 .theme-preview {
   padding: 1.5rem;
   border-radius: 12px;
-  min-height: 200px;
+  min-height: 400px;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   border: 2px solid var(--accent-color);
+  background: var(--surface-color);
 }
 
 .preview-title {
@@ -190,6 +192,165 @@
   margin: 0;
   font-family: 'Cinzel', serif;
   font-size: 1.3rem;
+}
+
+/* UI Elements Preview Styles */
+.ui-elements-preview {
+  margin-top: 1.5rem;
+}
+
+.ui-elements-preview h5 {
+  margin: 0 0 1rem 0;
+  font-family: 'Cinzel', serif;
+  font-size: 1.2rem;
+}
+
+.preview-section {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.preview-section h6 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Header Preview */
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.preview-header span {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.preview-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: default;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  user-select: none;
+}
+
+.preview-btn:hover {
+  transform: none;
+}
+
+.preview-btn.primary {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.preview-btn.secondary {
+  border: 2px solid;
+  background: transparent;
+}
+
+/* Card Preview */
+.preview-card {
+  padding: 1rem;
+  border-radius: 8px;
+  border: 2px solid;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.preview-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.preview-card p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Button Preview */
+.preview-buttons {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Form Preview */
+.preview-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.preview-input,
+.preview-select {
+  padding: 0.5rem 0.75rem;
+  border: 2px solid;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.preview-input:focus,
+.preview-select:focus {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.preview-select {
+  cursor: pointer;
+}
+
+/* Navigation Preview */
+.preview-nav {
+  display: flex;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.preview-nav-link {
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.preview-nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Status Elements Preview */
+.preview-status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.preview-status-success,
+.preview-status-error {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
 }
 
 .simple-color-preview {

@@ -79,7 +79,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
       }
       
       await resetPassword(trimmedEmail);
-      setResetMessage('Password reset email sent! Check your inbox.');
+      setResetMessage('Password reset email sent! Check your inbox. If you don\'t receive an email, check your spam folder');
       setResetEmail('');
     } catch (err: any) {
       setResetMessage(err.message || 'Failed to send reset email.');
@@ -95,7 +95,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
           <div className="form-icon">🔐</div>
           <h2>Reset Password</h2>
           <p>Enter your email to receive a password reset link</p>
-        </div>
+          </div>
         
         <form onSubmit={handleResetPassword} className="login-form">
           {resetMessage && (

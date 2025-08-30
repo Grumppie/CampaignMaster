@@ -8,6 +8,7 @@ export const Settings: React.FC = () => {
   const { isPlaying, volume, toggle, setVolume } = useAudioContext();
   const { currentTheme, setTheme, themes, deleteCustomTheme } = useTheme();
   const [showThemeCreator, setShowThemeCreator] = useState(false);
+  const [editingTheme, setEditingTheme] = useState<any>(null);
 
   const handleThemeChange = (themeId: string) => {
     setTheme(themeId);
@@ -17,6 +18,16 @@ export const Settings: React.FC = () => {
     if (window.confirm(`Are you sure you want to delete the theme "${themeName}"?`)) {
       deleteCustomTheme(themeId);
     }
+  };
+
+  const handleEditTheme = (theme: any) => {
+    setEditingTheme(theme);
+    setShowThemeCreator(true);
+  };
+
+  const handleCloseThemeCreator = () => {
+    setShowThemeCreator(false);
+    setEditingTheme(null);
   };
 
   return (
@@ -41,9 +52,9 @@ export const Settings: React.FC = () => {
                 className={`theme-option ${currentTheme.id === theme.id ? 'selected' : ''}`}
               >
                 <div 
-                  className="theme-preview"
+                  className="settings-theme-preview"
                   style={{
-                    background: `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary})`
+                    background: `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary})`,
                   }}
                 ></div>
                 <h3>{theme.name}</h3>
@@ -54,6 +65,13 @@ export const Settings: React.FC = () => {
                     className="apply-theme-btn"
                   >
                     {currentTheme.id === theme.id ? '✓ Applied' : 'Apply'}
+                  </button>
+                  <button
+                    onClick={() => handleEditTheme(theme)}
+                    className="edit-theme-btn"
+                    title="Edit theme"
+                  >
+                    ✏️
                   </button>
                   {theme.isCustom && (
                     <button
@@ -72,7 +90,10 @@ export const Settings: React.FC = () => {
       </div>
       
       {showThemeCreator && (
-        <CustomThemeCreator onClose={() => setShowThemeCreator(false)} />
+        <CustomThemeCreator 
+          editingTheme={editingTheme} 
+          onClose={handleCloseThemeCreator} 
+        />
       )}
     </div>
   );

@@ -9,6 +9,7 @@ import { CampaignList } from './pages/CampaignList';
 import { CampaignCreate } from './pages/CampaignCreate';
 import { CampaignPage } from './pages/CampaignPage';
 import { Settings } from './pages/Settings';
+import { Achievements } from './pages/Achievements';
 import { AudioControls } from './components/audio/AudioControls';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AudioProvider } from './contexts/AudioContext';
@@ -85,6 +86,13 @@ function App() {
               !user ? <Navigate to="/login" replace /> : (
                 <AuthenticatedLayout>
                   <Settings />
+                </AuthenticatedLayout>
+              )
+            } />
+            <Route path="/achievements" element={
+              !user ? <Navigate to="/login" replace /> : (
+                <AuthenticatedLayout>
+                  <Achievements />
                 </AuthenticatedLayout>
               )
             } />

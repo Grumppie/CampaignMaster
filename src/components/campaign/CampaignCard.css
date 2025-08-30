@@ -54,9 +54,31 @@
 
 .campaign-description {
   color: var(--light-text);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
   line-height: 1.6;
   opacity: 0.9;
+}
+
+.campaign-description-container {
+  margin-bottom: var(--spacing-lg);
+}
+
+.expand-description-btn {
+  background: none;
+  border: none;
+  color: var(--secondary-gold);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: var(--spacing-xs) 0;
+  transition: all 0.3s ease;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.expand-description-btn:hover {
+  color: var(--accent-blue);
+  transform: translateY(-1px);
 }
 
 .campaign-meta {

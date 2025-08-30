@@ -96,6 +96,7 @@ interface ThemeContextType {
   addCustomTheme: (theme: Omit<Theme, 'id'>) => void;
   deleteCustomTheme: (themeId: string) => void;
   updateCustomTheme: (themeId: string, updates: Partial<Theme>) => void;
+  editTheme: (themeId: string, updatedTheme: Omit<Theme, 'id'>) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -172,9 +173,49 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   };
 
+  const editTheme = (themeId: string, updatedTheme: Omit<Theme, 'id'>) => {
+    // Check if it's a system theme
+    const isSystemTheme = themes.some(theme => theme.id === themeId);
+    
+    if (isSystemTheme) {
+      // For system themes, create a new custom theme based on the edited version
+      const newCustomTheme: Theme = {
+        ...updatedTheme,
+        id: `custom-${Date.now()}`,
+        isCustom: true,
+        name: `${updatedTheme.name} (Custom)`,
+        description: `${updatedTheme.description} - Modified version`
+      };
+      
+      const updatedCustomThemes = [...customThemes, newCustomTheme];
+      setCustomThemes(updatedCustomThemes);
+      localStorage.setItem('customThemes', JSON.stringify(updatedCustomThemes));
+      
+      // If the edited theme was the current theme, switch to the new custom version
+      if (currentTheme.id === themeId) {
+        setCurrentTheme(newCustomTheme);
+        localStorage.setItem('selectedTheme', newCustomTheme.id);
+      }
+    } else {
+      // For custom themes, update directly
+      const updatedCustomThemes = customThemes.map(theme => 
+        theme.id === themeId ? { ...theme, ...updatedTheme } : theme
+      );
+      setCustomThemes(updatedCustomThemes);
+      localStorage.setItem('customThemes', JSON.stringify(updatedCustomThemes));
+      
+      // If the edited theme was the current theme, update it
+      if (currentTheme.id === themeId) {
+        setCurrentTheme({ ...currentTheme, ...updatedTheme });
+      }
+    }
+  };
+
   // Apply theme to CSS custom properties
   useEffect(() => {
     const root = document.documentElement;
+    
+    // Set basic theme colors
     root.style.setProperty('--primary-color', currentTheme.colors.primary);
     root.style.setProperty('--secondary-color', currentTheme.colors.secondary);
     root.style.setProperty('--accent-color', currentTheme.colors.accent);
@@ -182,6 +223,34 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     root.style.setProperty('--surface-color', currentTheme.colors.surface);
     root.style.setProperty('--text-color', currentTheme.colors.text);
     root.style.setProperty('--text-secondary-color', currentTheme.colors.textSecondary);
+    
+    // Set legacy colors for backward compatibility
+    root.style.setProperty('--primary-purple', currentTheme.colors.primary);
+    root.style.setProperty('--secondary-gold', currentTheme.colors.accent);
+    root.style.setProperty('--accent-blue', currentTheme.colors.secondary);
+    root.style.setProperty('--dark-bg', currentTheme.colors.background);
+    root.style.setProperty('--light-text', currentTheme.colors.text);
+    root.style.setProperty('--card-bg', currentTheme.colors.surface);
+    
+    // Set dynamic gradient effects
+    root.style.setProperty('--gradient-start', currentTheme.colors.primary);
+    root.style.setProperty('--gradient-end', currentTheme.colors.secondary);
+    root.style.setProperty('--accent-gradient-start', currentTheme.colors.accent);
+    root.style.setProperty('--accent-gradient-end', currentTheme.colors.accent);
+    root.style.setProperty('--gold-gradient-start', currentTheme.colors.accent);
+    root.style.setProperty('--gold-gradient-end', currentTheme.colors.accent);
+    
+    // Set dynamic shadow colors
+    root.style.setProperty('--shadow-color', 'rgba(0, 0, 0, 0.3)');
+    root.style.setProperty('--accent-shadow-color', `${currentTheme.colors.accent}40`); // 25% opacity
+    root.style.setProperty('--accent-glow-color', `${currentTheme.colors.accent}99`); // 60% opacity
+    
+    // Set dynamic border colors
+    root.style.setProperty('--border-color', `${currentTheme.colors.accent}4D`); // 30% opacity
+    root.style.setProperty('--border-accent', `${currentTheme.colors.accent}4D`); // 30% opacity
+    root.style.setProperty('--border-accent-hover', `${currentTheme.colors.accent}99`); // 60% opacity
+    root.style.setProperty('--border-accent-focus', `${currentTheme.colors.accent}CC`); // 80% opacity
+    
   }, [currentTheme]);
 
   return (
@@ -191,7 +260,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       themes: allThemes,
       addCustomTheme,
       deleteCustomTheme,
-      updateCustomTheme
+      updateCustomTheme,
+      editTheme
     }}>
       {children}
     </ThemeContext.Provider>

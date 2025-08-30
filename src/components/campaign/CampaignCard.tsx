@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Campaign } from '../../types';
 import './CampaignCard.css';
 
@@ -13,8 +13,19 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({
   onJoin, 
   currentUserId 
 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
   const isDM = campaign.dmId === currentUserId;
   const isAlreadyInCampaign = campaign.players.some(player => player.userId === currentUserId);
+  
+  // Check if description is long enough to need truncation
+  const descriptionLength = campaign.description.length;
+  const needsTruncation = descriptionLength > 150;
+  const maxLength = 150;
+  
+  const getTruncatedDescription = () => {
+    if (!needsTruncation) return campaign.description;
+    return campaign.description.substring(0, maxLength) + '...';
+  };
   
   const getButtonText = () => {
     if (isDM) return 'Manage Campaign';
@@ -28,6 +39,10 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({
     }
   };
 
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
     <div className="campaign-card hover-lift">
       <div className="campaign-header">
@@ -36,7 +51,19 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({
         {isAlreadyInCampaign && !isDM && <span className="player-badge">Player</span>}
       </div>
       
-      <p className="campaign-description">{campaign.description}</p>
+      <div className="campaign-description-container">
+        <p className="campaign-description">
+          {isExpanded ? campaign.description : getTruncatedDescription()}
+        </p>
+        {needsTruncation && (
+          <button 
+            className="expand-description-btn"
+            onClick={toggleExpanded}
+          >
+            {isExpanded ? 'Read Less' : 'Read More'}
+          </button>
+        )}
+      </div>
       
       <div className="campaign-meta">
         <span className="dm-name">DM: {campaign.dmName}</span>

@@ -3,9 +3,9 @@
   align-items: center;
   justify-content: center;
   gap: var(--spacing-md);
-  background: linear-gradient(135deg, var(--gold-gradient-start), var(--gold-gradient-end));
-  border: 2px solid var(--secondary-gold);
-  color: var(--dark-bg);
+  background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
+  border: 2px solid var(--border-accent);
+  color: var(--primary-color);
   padding: var(--spacing-lg) var(--spacing-xl);
   border-radius: var(--radius-lg);
   cursor: pointer;
@@ -15,15 +15,15 @@
   min-width: 250px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+  box-shadow: var(--accent-shadow-lg);
   letter-spacing: 0.5px;
 }
 
 .google-signin-btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
-  border-color: var(--light-text);
-  background: linear-gradient(135deg, var(--gold-gradient-end), var(--gold-gradient-start));
+  box-shadow: var(--accent-shadow-xl);
+  border-color: var(--accent-color);
+  background: linear-gradient(135deg, var(--accent-gradient-end), var(--accent-gradient-start));
 }
 
 .google-signin-btn:active {

@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* Theme Colors - Default D&D Theme */
+  /* Theme Colors - These will be dynamically updated by ThemeContext */
   --primary-color: #1a0b2e;
   --secondary-color: #2d1b69;
   --accent-color: #d4af37;
@@ -18,13 +18,31 @@
   --dark-bg: var(--background-color);
   --light-text: var(--text-color);
   --card-bg: var(--surface-color);
-  --border-color: #3d2b5a;
+  --border-color: rgba(212, 175, 55, 0.3);
   
-  /* Additional colors for gradient effects */
+  /* Dynamic gradient effects that adapt to theme */
   --gradient-start: var(--primary-color);
   --gradient-end: var(--secondary-color);
+  --accent-gradient-start: var(--accent-color);
+  --accent-gradient-end: var(--accent-color);
   --gold-gradient-start: var(--accent-color);
-  --gold-gradient-end: #fbbf24;
+  --gold-gradient-end: var(--accent-color);
+  
+  /* Dynamic shadow colors that adapt to theme */
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --accent-shadow-color: rgba(212, 175, 55, 0.3);
+  --accent-glow-color: rgba(212, 175, 55, 0.6);
+  
+  /* Dynamic border colors */
+  --border-accent: rgba(212, 175, 55, 0.3);
+  --border-accent-hover: rgba(212, 175, 55, 0.6);
+  --border-accent-focus: rgba(212, 175, 55, 0.8);
+  
+  /* Status colors that adapt to theme */
+  --success-color: #2ecc71;
+  --error-color: #e74c3c;
+  --warning-color: #f39c12;
+  --info-color: #3498db;
   
   /* Typography */
   --font-fantasy: 'Cinzel', serif;
@@ -41,11 +59,24 @@
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
+  --radius-xl: 20px;
   
   /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 1px 2px var(--shadow-color);
+  --shadow-md: 0 4px 6px var(--shadow-color);
+  --shadow-lg: 0 10px 15px var(--shadow-color);
+  --shadow-xl: 0 20px 40px var(--shadow-color);
+  
+  /* Accent shadows */
+  --accent-shadow-sm: 0 1px 2px var(--accent-shadow-color);
+  --accent-shadow-md: 0 4px 6px var(--accent-shadow-color);
+  --accent-shadow-lg: 0 8px 25px var(--accent-shadow-color);
+  --accent-shadow-xl: 0 12px 35px var(--accent-shadow-color);
+  
+  /* Glow effects */
+  --accent-glow-sm: 0 0 10px var(--accent-glow-color);
+  --accent-glow-md: 0 0 20px var(--accent-glow-color);
+  --accent-glow-lg: 0 0 30px var(--accent-glow-color);
 }
 
 /* Base styles */
@@ -58,12 +89,12 @@
 body {
   font-family: var(--font-body);
   background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-  color: var(--light-text);
+  color: var(--text-color);
   line-height: 1.6;
   min-height: 100vh;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-fantasy);
-  color: var(--secondary-gold);
+  color: var(--accent-color);
 } 
