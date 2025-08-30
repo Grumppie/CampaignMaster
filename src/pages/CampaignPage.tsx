@@ -9,7 +9,7 @@ import { AchievementManager } from '../components/achievement/AchievementManager
 import './CampaignPage.css';
 
 export const CampaignPage: React.FC = () => {
-  const { campaignId } = useParams<{ campaignId: string }>();
+  const { id: campaignId } = useParams<{ id: string }>();
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,24 +34,32 @@ export const CampaignPage: React.FC = () => {
     const fetchCampaign = async () => {
       if (!campaignId) return;
       
+      console.log('Fetching campaign:', campaignId);
+      
       try {
         setLoading(true);
         const campaignData = await getCampaignById(campaignId);
-        setCampaign(campaignData);
+        console.log('Campaign data:', campaignData);
         
-        // Check if user should see join modal
-        if (user && campaignData) {
-          const isInCampaign = campaignData.players.some(player => player.userId === user.uid);
-          const isDM = campaignData.dmId === user.uid;
-          const isOnJoinRoute = location.pathname.includes('/join');
+        if (campaignData) {
+          setCampaign(campaignData);
           
-          // Show join modal if user is on join route and not in campaign and not DM
-          if (isOnJoinRoute && !isInCampaign && !isDM) {
-            setShowJoinModal(true);
-          } else if (!isInCampaign && !isDM && !isOnJoinRoute) {
-            // If user is not in campaign and not on join route, redirect to join
-            navigate(`/campaigns/${campaignId}/join`);
+          // Check if user should see join modal
+          if (user && campaignData) {
+            const isInCampaign = campaignData.players.some(player => player.userId === user.uid);
+            const isDM = campaignData.dmId === user.uid;
+            const isOnJoinRoute = location.pathname.includes('/join');
+            
+            // Show join modal if user is on join route and not in campaign and not DM
+            if (isOnJoinRoute && !isInCampaign && !isDM) {
+              setShowJoinModal(true);
+            } else if (!isInCampaign && !isDM && !isOnJoinRoute) {
+              // If user is not in campaign and not on join route, redirect to join
+              navigate(`/campaigns/${campaignId}/join`);
+            }
           }
+        } else {
+          setError('Campaign not found');
         }
       } catch (err) {
         setError('Failed to load campaign');

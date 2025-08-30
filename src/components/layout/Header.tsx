@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { signOutUser } from '../../services/auth';
+import { AudioControls } from '../audio/AudioControls';
 import './Header.css';
 
 export const Header: React.FC = () => {
@@ -52,9 +53,13 @@ export const Header: React.FC = () => {
           <Link to="/dashboard" className="nav-link">Dashboard</Link>
           <Link to="/campaigns" className="nav-link">Campaigns</Link>
           <Link to="/campaigns/create" className="nav-link">Create Campaign</Link>
+          <Link to="/settings" className="nav-link">Settings</Link>
         </nav>
         
         <div className="user-section">
+          <div className="header-audio-controls">
+            <AudioControls />
+          </div>
           {currentUser && (
             <>
               <div className="user-info">

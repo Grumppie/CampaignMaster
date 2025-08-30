@@ -61,6 +61,7 @@ export const CampaignCreate: React.FC = () => {
         dmId: currentUser.uid,
         dmName: currentUser.displayName,
         isActive: true,
+        totalSessions: 0,
         players: [],
         achievements: [],
         assignedAchievements: []

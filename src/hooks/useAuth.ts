@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { onAuthStateChange } from '../services/auth';
+import { onAuthStateChange, getUserProfile } from '../services/auth';
 import { User } from '../types';
 
 export interface AuthState {
@@ -15,17 +15,47 @@ export const useAuth = (): AuthState => {
 
   useEffect(() => {
     console.log('useAuth: Setting up auth listener');
-    const unsubscribe = onAuthStateChange((firebaseUser) => {
+    const unsubscribe = onAuthStateChange(async (firebaseUser) => {
       console.log('useAuth: Auth state changed', firebaseUser ? 'User logged in' : 'No user');
       if (firebaseUser) {
-        setUser({
-          uid: firebaseUser.uid,
-          displayName: firebaseUser.displayName || '',
-          email: firebaseUser.email || '',
-          photoURL: firebaseUser.photoURL || '',
-          createdCampaigns: [],
-          joinedCampaigns: []
-        });
+        try {
+          // Fetch user profile from Firestore
+          const userProfile = await getUserProfile(firebaseUser.uid);
+          if (userProfile) {
+            setUser(userProfile);
+          } else {
+            // Fallback to basic user data if profile not found
+            setUser({
+              uid: firebaseUser.uid,
+              username: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'user',
+              displayName: firebaseUser.displayName || '',
+              email: firebaseUser.email || '',
+              photoURL: firebaseUser.photoURL || '',
+              totalGlobalPoints: 0,
+              totalGlobalAchievements: 0,
+              createdAt: new Date(),
+              lastLoginAt: new Date(),
+              createdCampaigns: [],
+              joinedCampaigns: []
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching user profile:', error);
+          // Fallback to basic user data
+          setUser({
+            uid: firebaseUser.uid,
+            username: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'user',
+            displayName: firebaseUser.displayName || '',
+            email: firebaseUser.email || '',
+            photoURL: firebaseUser.photoURL || '',
+            totalGlobalPoints: 0,
+            totalGlobalAchievements: 0,
+            createdAt: new Date(),
+            lastLoginAt: new Date(),
+            createdCampaigns: [],
+            joinedCampaigns: []
+          });
+        }
         setIsAdmin(false); // Reset admin state when Firebase user logs in
       } else {
         setUser(null);

@@ -2,20 +2,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* DnD Color Palette - Updated to match reference image */
-  --primary-purple: #1a0b2e; /* Darker purple base */
-  --secondary-gold: #d4af37; /* Keep golden accent */
-  --accent-blue: #2d1b69; /* Deeper purple-blue */
-  --dark-bg: #0a0517; /* Very dark purple background */
-  --light-text: #f8fafc; /* Keep light text */
-  --card-bg: rgba(26, 11, 46, 0.8); /* Semi-transparent dark purple */
-  --border-color: #3d2b5a; /* Darker purple border */
+  /* Theme Colors - Default D&D Theme */
+  --primary-color: #1a0b2e;
+  --secondary-color: #2d1b69;
+  --accent-color: #d4af37;
+  --background-color: #1a0b2e;
+  --surface-color: rgba(26, 11, 46, 0.9);
+  --text-color: #ffffff;
+  --text-secondary-color: rgba(255, 255, 255, 0.8);
+  
+  /* Legacy colors for backward compatibility */
+  --primary-purple: var(--primary-color);
+  --secondary-gold: var(--accent-color);
+  --accent-blue: var(--secondary-color);
+  --dark-bg: var(--background-color);
+  --light-text: var(--text-color);
+  --card-bg: var(--surface-color);
+  --border-color: #3d2b5a;
   
   /* Additional colors for gradient effects */
-  --gradient-start: #1a0b2e; /* Dark purple */
-  --gradient-end: #2d1b69; /* Deeper purple-blue */
-  --gold-gradient-start: #d4af37; /* Golden */
-  --gold-gradient-end: #fbbf24; /* Lighter gold */
+  --gradient-start: var(--primary-color);
+  --gradient-end: var(--secondary-color);
+  --gold-gradient-start: var(--accent-color);
+  --gold-gradient-end: #fbbf24;
   
   /* Typography */
   --font-fantasy: 'Cinzel', serif;

@@ -1,440 +1,220 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
-import { GoogleSignIn } from './components/auth/GoogleSignIn';
-import { Header } from './components/layout/Header';
+import { LoginForm } from './components/auth/LoginForm';
+import { RegisterForm } from './components/auth/RegisterForm';
+import { AuthenticatedLayout } from './components/layout/AuthenticatedLayout';
 import { Dashboard } from './pages/Dashboard';
 import { CampaignList } from './pages/CampaignList';
 import { CampaignCreate } from './pages/CampaignCreate';
 import { CampaignPage } from './pages/CampaignPage';
+import { Settings } from './pages/Settings';
+import { AudioControls } from './components/audio/AudioControls';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { AudioProvider } from './contexts/AudioContext';
 import './styles/theme.css';
-import './styles/animations.css';
-
-// Loading component
-const LoadingSpinner: React.FC = () => (
-  <div style={{ 
-    display: 'flex', 
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    height: '100vh',
-    background: 'linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%)'
-  }}>
-    <div className="loading-spinner" style={{
-      width: '50px',
-      height: '50px',
-      border: '4px solid var(--border-color)',
-      borderTop: '4px solid var(--secondary-gold)',
-      borderRadius: '50%',
-      animation: 'spin 1s linear infinite'
-    }}></div>
-  </div>
-);
-
-// Admin Modal Component
-const AdminModal: React.FC<{ isOpen: boolean; onClose: () => void; onLogin: () => void }> = ({ isOpen, onClose, onLogin }) => {
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  // Reset form when modal opens/closes - moved outside conditional
-  React.useEffect(() => {
-    if (isOpen) {
-      setPassword('');
-      setError('');
-    }
-  }, [isOpen]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
-
-    // Simulate a small delay for better UX
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    if (password === 'halloween77') {
-      onLogin();
-    } else {
-      setError('Invalid admin password');
-      setPassword('');
-    }
-    setIsLoading(false);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      onClose();
-    }
-  };
-
-  if (!isOpen) return null;
-
-  return (
-    <div 
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 1000,
-        backdropFilter: 'blur(5px)'
-      }}
-      onClick={onClose} // Close when clicking backdrop
-    >
-      <div 
-        style={{
-          background: 'var(--card-bg)',
-          border: '2px solid var(--secondary-gold)',
-          borderRadius: 'var(--radius-lg)',
-          padding: 'var(--spacing-xl)',
-          maxWidth: '400px',
-          width: '90%',
-          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)'
-        }}
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking modal content
-        onKeyDown={handleKeyDown}
-      >
-        <h2 style={{
-          color: 'var(--secondary-gold)',
-          marginBottom: 'var(--spacing-lg)',
-          textAlign: 'center',
-          fontSize: '1.5rem'
-        }}>
-          Admin Login
-        </h2>
-        
-        <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: 'var(--spacing-lg)' }}>
-            <label style={{
-              display: 'block',
-              marginBottom: 'var(--spacing-sm)',
-              color: 'var(--light-text)',
-              fontWeight: '500'
-            }}>
-              Admin Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={{
-                width: '100%',
-                padding: 'var(--spacing-md)',
-                borderRadius: 'var(--radius-md)',
-                border: '2px solid var(--border-color)',
-                background: 'var(--dark-bg)',
-                color: 'var(--light-text)',
-                fontSize: '1rem',
-                boxSizing: 'border-box'
-              }}
-              placeholder="Enter admin password"
-              disabled={isLoading}
-              autoFocus
-            />
-          </div>
-          
-          {error && (
-            <div style={{
-              color: '#ef4444',
-              marginBottom: 'var(--spacing-md)',
-              textAlign: 'center',
-              fontSize: '0.9rem'
-            }}>
-              {error}
-            </div>
-          )}
-          
-          <div style={{
-            display: 'flex',
-            gap: 'var(--spacing-md)',
-            justifyContent: 'center'
-          }}>
-            <button
-              type="button"
-              onClick={onClose}
-              style={{
-                padding: 'var(--spacing-md) var(--spacing-lg)',
-                borderRadius: 'var(--radius-md)',
-                border: '2px solid var(--border-color)',
-                background: 'transparent',
-                color: 'var(--light-text)',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                transition: 'all 0.3s ease'
-              }}
-              disabled={isLoading}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              style={{
-                padding: 'var(--spacing-md) var(--spacing-lg)',
-                borderRadius: 'var(--radius-md)',
-                border: '2px solid var(--secondary-gold)',
-                background: 'linear-gradient(135deg, var(--primary-purple), var(--accent-blue))',
-                color: 'var(--light-text)',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                fontWeight: '600',
-                transition: 'all 0.3s ease',
-                opacity: isLoading ? 0.7 : 1
-              }}
-              disabled={isLoading}
-            >
-              {isLoading ? 'Logging in...' : 'Login'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};
-
-// Protected route component
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, loading } = useAuth();
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
-  
-  // Check for admin login on component mount
-  React.useEffect(() => {
-    const adminLoggedIn = localStorage.getItem('adminLoggedIn');
-    if (adminLoggedIn === 'true') {
-      setIsAdminLoggedIn(true);
-    }
-  }, []);
-  
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-  
-  if (!user && !isAdminLoggedIn) {
-    return <Navigate to="/login" replace />;
-  }
-  
-  return <>{children}</>;
-};
-
-// Login page
-const LoginPage: React.FC = () => {
-  const { user, loading } = useAuth();
-  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
-  
-  // Check for existing admin login on component mount - moved to top
-  React.useEffect(() => {
-    const adminLoggedIn = localStorage.getItem('adminLoggedIn');
-    if (adminLoggedIn === 'true') {
-      setIsAdminLoggedIn(true);
-    }
-  }, []);
-  
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-  
-  if (user || isAdminLoggedIn) {
-    return <Navigate to="/dashboard" replace />;
-  }
-
-  const handleAdminLogin = () => {
-    setIsAdminLoggedIn(true);
-    setIsAdminModalOpen(false);
-    // Create a mock admin user object
-    const adminUser = {
-      uid: 'admin',
-      displayName: 'Admin User',
-      email: 'admin@campaignmaster.com',
-      photoURL: '',
-      createdCampaigns: [],
-      joinedCampaigns: []
-    };
-    // Store admin state in localStorage for persistence
-    localStorage.setItem('adminLoggedIn', 'true');
-    localStorage.setItem('adminUser', JSON.stringify(adminUser));
-  };
-  
-  return (
-    <div className="login-page page-transition" style={{
-      minHeight: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      background: 'linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%)',
-      padding: 'var(--spacing-xl)',
-      position: 'relative'
-    }}>
-      {/* Admin Button */}
-      <button
-        onClick={() => setIsAdminModalOpen(true)}
-        style={{
-          position: 'absolute',
-          top: 'var(--spacing-lg)',
-          right: 'var(--spacing-lg)',
-          padding: 'var(--spacing-sm) var(--spacing-md)',
-          borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--secondary-gold)',
-          background: 'rgba(26, 11, 46, 0.8)',
-          color: 'var(--secondary-gold)',
-          cursor: 'pointer',
-          fontSize: '0.9rem',
-          fontWeight: '500',
-          transition: 'all 0.3s ease',
-          backdropFilter: 'blur(10px)'
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = 'rgba(212, 175, 55, 0.2)';
-          e.currentTarget.style.borderColor = 'var(--light-text)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = 'rgba(26, 11, 46, 0.8)';
-          e.currentTarget.style.borderColor = 'var(--secondary-gold)';
-        }}
-      >
-        Admin
-      </button>
-
-      {/* Main Content Box */}
-      <div style={{
-        background: 'var(--card-bg)',
-        border: '2px solid var(--secondary-gold)',
-        borderRadius: 'var(--radius-lg)',
-        padding: 'var(--spacing-xl)',
-        maxWidth: '500px',
-        width: '90%',
-        textAlign: 'center',
-        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
-        backdropFilter: 'blur(10px)'
-      }}>
-        {/* Shield Icon */}
-        <div style={{
-          width: '60px',
-          height: '60px',
-          background: 'linear-gradient(135deg, var(--gold-gradient-start), var(--gold-gradient-end))',
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          margin: '0 auto var(--spacing-lg)',
-          fontSize: '2rem',
-          color: 'var(--dark-bg)',
-          boxShadow: '0 4px 15px rgba(212, 175, 55, 0.3)'
-        }}>
-          🛡️
-        </div>
-
-        {/* Title */}
-        <h1 style={{
-          fontSize: 'clamp(2rem, 6vw, 3rem)',
-          fontWeight: '700',
-          margin: '0 0 var(--spacing-md)',
-          textShadow: '0 0 20px rgba(212, 175, 55, 0.5)',
-          letterSpacing: '1px'
-        }}>
-          D&D ACHIEVEMENTS
-        </h1>
-        
-        {/* Subtitle */}
-        <p style={{
-          fontSize: 'clamp(1rem, 3vw, 1.2rem)',
-          margin: '0 0 var(--spacing-xl)',
-          color: 'var(--light-text)',
-          opacity: 0.9,
-          fontWeight: '300',
-          letterSpacing: '0.5px'
-        }}>
-          Track your epic deeds and earn legendary badges
-        </p>
-        
-        {/* Golden Button */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center'
-        }}>
-          <GoogleSignIn />
-        </div>
-      </div>
-
-      {/* Admin Modal */}
-      <AdminModal 
-        isOpen={isAdminModalOpen}
-        onClose={() => setIsAdminModalOpen(false)}
-        onLogin={handleAdminLogin}
-      />
-    </div>
-  );
-};
-
-// Root component that handles initial loading
-const AppContent: React.FC = () => {
-  const { loading } = useAuth();
-  
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-  
-  return (
-    <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="/dashboard" element={
-        <ProtectedRoute>
-          <>
-            <Header />
-            <Dashboard />
-          </>
-        </ProtectedRoute>
-      } />
-      <Route path="/campaigns" element={
-        <ProtectedRoute>
-          <>
-            <Header />
-            <CampaignList />
-          </>
-        </ProtectedRoute>
-      } />
-      <Route path="/campaigns/create" element={
-        <ProtectedRoute>
-          <>
-            <Header />
-            <CampaignCreate />
-          </>
-        </ProtectedRoute>
-      } />
-      <Route path="/campaigns/:campaignId" element={
-        <ProtectedRoute>
-          <>
-            <Header />
-            <CampaignPage />
-          </>
-        </ProtectedRoute>
-      } />
-      <Route path="/campaigns/:campaignId/join" element={
-        <ProtectedRoute>
-          <>
-            <Header />
-            <CampaignPage />
-          </>
-        </ProtectedRoute>
-      } />
-    </Routes>
-  );
-};
+import './App.css';
 
 function App() {
-  return (
-    <Router>
-      <div className="App">
-        <AppContent />
+  const { user, loading } = useAuth();
+
+  console.log('App: Current auth state', { user: user?.displayName, loading });
+
+  useEffect(() => {
+    console.log('App: User state changed', { user: user?.displayName, loading });
+  }, [user, loading]);
+
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <div className="loading-spinner">
+          <div className="spinner-ring"></div>
+          <div className="spinner-text">Loading your adventure...</div>
+        </div>
       </div>
-    </Router>
+    );
+  }
+
+  return (
+    <ThemeProvider>
+      <AudioProvider>
+        <Router>
+          <Routes>
+            <Route path="/login" element={
+              !user ? <LoginPage /> : <Navigate to="/dashboard" replace />
+            } />
+            <Route path="/" element={
+              !user ? <Navigate to="/login" replace /> : <Navigate to="/dashboard" replace />
+            } />
+            <Route path="/dashboard" element={
+              !user ? <Navigate to="/login" replace /> : (
+                <AuthenticatedLayout>
+                  <Dashboard />
+                </AuthenticatedLayout>
+              )
+            } />
+            <Route path="/campaigns" element={
+              !user ? <Navigate to="/login" replace /> : (
+                <AuthenticatedLayout>
+                  <CampaignList />
+                </AuthenticatedLayout>
+              )
+            } />
+            <Route path="/campaigns/create" element={
+              !user ? <Navigate to="/login" replace /> : (
+                <AuthenticatedLayout>
+                  <CampaignCreate />
+                </AuthenticatedLayout>
+              )
+            } />
+            <Route path="/campaigns/:id" element={
+              !user ? <Navigate to="/login" replace /> : (
+                <AuthenticatedLayout>
+                  <CampaignPage />
+                </AuthenticatedLayout>
+              )
+            } />
+            <Route path="/campaigns/:id/join" element={
+              !user ? <Navigate to="/login" replace /> : (
+                <AuthenticatedLayout>
+                  <CampaignPage />
+                </AuthenticatedLayout>
+              )
+            } />
+            <Route path="/settings" element={
+              !user ? <Navigate to="/login" replace /> : (
+                <AuthenticatedLayout>
+                  <Settings />
+                </AuthenticatedLayout>
+              )
+            } />
+          </Routes>
+        </Router>
+      </AudioProvider>
+    </ThemeProvider>
   );
 }
+
+const LoginPage: React.FC = () => {
+  const [showRegister, setShowRegister] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  // Redirect to dashboard if user is already authenticated
+  useEffect(() => {
+    if (user) {
+      console.log('User is authenticated, redirecting to dashboard');
+      navigate('/dashboard', { replace: true });
+    }
+  }, [user, navigate]);
+
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      const { clientX, clientY } = event;
+      const { innerWidth, innerHeight } = window;
+      
+      // Calculate normalized position (-1 to 1)
+      const x = (clientX / innerWidth) * 2 - 1;
+      const y = (clientY / innerHeight) * 2 - 1;
+      
+      setMousePosition({ x, y });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  const handleAuthSuccess = () => {
+    console.log('Authentication successful - redirecting to dashboard');
+    navigate('/dashboard', { replace: true });
+  };
+
+  const handleSwitchToRegister = () => {
+    setShowRegister(true);
+  };
+
+  const handleSwitchToLogin = () => {
+    setShowRegister(false);
+  };
+
+  // Calculate subtle transform based on mouse position
+  const backgroundTransform = {
+    transform: `scaleX(-1) translate(${mousePosition.x * 10}px, ${mousePosition.y * 5}px)`,
+  };
+
+  const dragonTransform = {
+    transform: `scaleX(-1) translate(${mousePosition.x * 15}px, ${mousePosition.y * 8}px)`,
+  };
+
+  const heroTransform = {
+    transform: `translate(${mousePosition.x * -5}px, ${mousePosition.y * -3}px)`,
+  };
+
+  // Don't render login page if user is already authenticated
+  if (user) {
+    return null;
+  }
+
+  return (
+    <div className="login-page">
+      <div 
+        className="dragon-background"
+        style={dragonTransform}
+      ></div>
+      <div 
+        className="background-overlay"
+        style={backgroundTransform}
+      ></div>
+      <div className="login-container">
+        <div className="hero-section">
+          <div className="hero-content" style={heroTransform}>
+            <h1 className="hero-title">
+              <span className="title-line">Dungeons & Dragons</span>
+              <span className="title-line">Campaign Tracker</span>
+            </h1>
+            <p className="hero-subtitle">
+              Embark on epic adventures. Track your progress. 
+              <br />
+              <span className="highlight">Forge your legend.</span>
+            </p>
+            <div className="hero-features">
+              <div className="feature">
+                <span className="feature-icon">⚔️</span>
+                <span>Session Management</span>
+              </div>
+              <div className="feature">
+                <span className="feature-icon">🏆</span>
+                <span>Achievement System</span>
+              </div>
+              <div className="feature">
+                <span className="feature-icon">📊</span>
+                <span>Global Leaderboards</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="auth-section">
+          {showRegister ? (
+            <RegisterForm 
+              onSuccess={handleAuthSuccess}
+              onSwitchToLogin={handleSwitchToLogin}
+            />
+          ) : (
+            <LoginForm 
+              onSuccess={handleAuthSuccess}
+              onSwitchToRegister={handleSwitchToRegister}
+            />
+          )}
+        </div>
+      </div>
+      <AudioControls />
+    </div>
+  );
+};
 
 export default App;
