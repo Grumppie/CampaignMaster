@@ -9,6 +9,7 @@ export const Header: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Check for admin login on component mount
   useEffect(() => {
@@ -35,6 +36,14 @@ export const Header: React.FC = () => {
     }
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   // Determine the current user (Firebase user or admin)
   const currentUser = isAdminLoggedIn ? {
     displayName: 'Admin User',
@@ -45,15 +54,27 @@ export const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="header-content">
-        <Link to="/dashboard" className="logo">
+        <Link to="/dashboard" className="logo" onClick={closeMobileMenu}>
           <h1>Campaign Master</h1>
         </Link>
         
-        <nav className="nav">
-          <Link to="/dashboard" className="nav-link">Dashboard</Link>
-          <Link to="/campaigns" className="nav-link">Campaigns</Link>
-          <Link to="/campaigns/create" className="nav-link">Create Campaign</Link>
-          <Link to="/settings" className="nav-link">Settings</Link>
+        {/* Mobile menu button */}
+        <button 
+          className={`mobile-menu-btn ${isMobileMenuOpen ? 'active' : ''}`}
+          onClick={toggleMobileMenu}
+          aria-label="Toggle mobile menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        
+        <nav className={`nav ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+          <Link to="/dashboard" className="nav-link" onClick={closeMobileMenu}>Dashboard</Link>
+          <Link to="/campaigns" className="nav-link" onClick={closeMobileMenu}>Campaigns</Link>
+          <Link to="/campaigns/create" className="nav-link" onClick={closeMobileMenu}>Create Campaign</Link>
+          <Link to="/achievements" className="nav-link" onClick={closeMobileMenu}>Achievements</Link>
+          <Link to="/settings" className="nav-link" onClick={closeMobileMenu}>Settings</Link>
         </nav>
         
         <div className="user-section">

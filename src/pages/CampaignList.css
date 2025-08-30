@@ -1,12 +1,13 @@
 .campaign-list {
   min-height: calc(100vh - 80px);
   background: var(--dark-bg);
-  padding: var(--spacing-xl);
+  padding: var(--spacing-xl) 0;
 }
 
 .campaign-list-container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 var(--spacing-md);
 }
 
 .campaign-list-header {
@@ -103,9 +104,10 @@
   opacity: 0.8;
 }
 
+/* Mobile responsive styles */
 @media (max-width: 768px) {
   .campaign-list {
-    padding: var(--spacing-md);
+    padding: var(--spacing-md) 0;
   }
   
   .campaign-list-header {
@@ -115,5 +117,19 @@
   
   .campaigns-grid {
     grid-template-columns: 1fr;
+  }
+
+  .campaign-list-container {
+    padding: 0 var(--spacing-sm);
+  }
+}
+
+@media (max-width: 480px) {
+  .campaign-list {
+    padding: var(--spacing-sm) 0;
+  }
+  
+  .campaign-list-container {
+    padding: 0 var(--spacing-xs);
   }
 } 

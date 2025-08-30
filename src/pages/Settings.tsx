@@ -50,19 +50,30 @@ export const Settings: React.FC = () => {
               <div 
                 key={theme.id}
                 className={`theme-option ${currentTheme.id === theme.id ? 'selected' : ''}`}
+                style={{
+                  background: `linear-gradient(135deg, ${theme.colors.primary}40, ${theme.colors.secondary}40)`,
+                  borderColor: theme.colors.accent,
+                }}
               >
                 <div 
                   className="settings-theme-preview"
                   style={{
                     background: `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary})`,
+                    borderColor: theme.colors.accent,
                   }}
                 ></div>
-                <h3>{theme.name}</h3>
-                <p>{theme.description}</p>
+                <h3 style={{ color: theme.colors.accent }}>{theme.name}</h3>
+                <p style={{ color: theme.colors.textSecondary }}>{theme.description}</p>
                 <div className="theme-actions">
                   <button
                     onClick={() => handleThemeChange(theme.id)}
                     className="apply-theme-btn"
+                    style={{
+                      background: currentTheme.id === theme.id 
+                        ? `linear-gradient(135deg, ${theme.colors.accent}, ${theme.colors.accent}dd)`
+                        : `linear-gradient(135deg, ${theme.colors.accent}, ${theme.colors.accent}dd)`,
+                      color: currentTheme.id === theme.id ? theme.colors.primary : theme.colors.primary,
+                    }}
                   >
                     {currentTheme.id === theme.id ? '✓ Applied' : 'Apply'}
                   </button>
@@ -70,6 +81,10 @@ export const Settings: React.FC = () => {
                     onClick={() => handleEditTheme(theme)}
                     className="edit-theme-btn"
                     title="Edit theme"
+                    style={{
+                      background: `linear-gradient(135deg, ${theme.colors.accent}40, ${theme.colors.accent}60)`,
+                      borderColor: theme.colors.accent,
+                    }}
                   >
                     ✏️
                   </button>
@@ -78,6 +93,10 @@ export const Settings: React.FC = () => {
                       onClick={() => handleDeleteTheme(theme.id, theme.name)}
                       className="delete-theme-btn"
                       title="Delete theme"
+                      style={{
+                        background: `linear-gradient(135deg, #e74c3c40, #e74c3c60)`,
+                        borderColor: '#e74c3c',
+                      }}
                     >
                       🗑️
                     </button>

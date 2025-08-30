@@ -323,12 +323,27 @@ body {
 }
 
 .main-content {
-  padding: 2rem;
+  padding: 2rem 1rem;
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
   z-index: 5;
   min-height: calc(100vh - 80px); /* Account for header height */
+}
+
+/* Mobile responsive main content */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 1rem 0.5rem;
+    min-height: calc(100vh - 70px);
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 0.75rem 0.25rem;
+    min-height: calc(100vh - 60px);
+  }
 }
 
 /* Animations */

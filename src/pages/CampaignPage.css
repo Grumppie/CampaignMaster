@@ -1,12 +1,13 @@
 .campaign-page {
-  min-height: 100vh;
+  min-height: calc(100vh - 80px);
   background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  padding: var(--spacing-xl) 0;
 }
 
 .campaign-page-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: var(--spacing-xl);
+  padding: 0 var(--spacing-md);
 }
 
 .campaign-header {
@@ -215,21 +216,19 @@
 }
 
 .player-action-btn {
-  background: transparent;
-  border: 1px solid var(--border-color);
+  background: linear-gradient(135deg, var(--accent-blue), var(--secondary-gold));
   color: var(--light-text);
+  border: none;
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 0.8rem;
   font-weight: 500;
 }
 
 .player-action-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: var(--secondary-gold);
-  color: var(--secondary-gold);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(45, 27, 105, 0.4);
 }
 
 .no-players {
@@ -240,24 +239,15 @@
   padding: var(--spacing-xl);
 }
 
-.error-message {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #fca5a5;
-  padding: var(--spacing-md);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--spacing-lg);
-  font-size: 0.9rem;
-}
-
 .loading-container,
 .error-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-xxl);
-  color: var(--light-text);
+  min-height: 400px;
+  gap: var(--spacing-lg);
+  text-align: center;
 }
 
 .loading-spinner {
@@ -267,7 +257,6 @@
   border-top: 4px solid var(--secondary-gold);
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: var(--spacing-md);
 }
 
 @keyframes spin {
@@ -276,48 +265,70 @@
 }
 
 .error-container h2 {
-  color: #fca5a5;
+  color: #e74c3c;
   margin-bottom: var(--spacing-md);
 }
 
 .error-container button {
-  background: linear-gradient(135deg, var(--gold-gradient-start), var(--gold-gradient-end));
-  border: 1px solid var(--secondary-gold);
-  color: var(--dark-bg);
-  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--accent-blue);
+  color: var(--light-text);
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-lg);
   border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all 0.3s ease;
   font-weight: 600;
-  margin-top: var(--spacing-md);
+  transition: all 0.3s ease;
 }
 
 .error-container button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(45, 27, 105, 0.4);
 }
 
+.error-message {
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Mobile responsive styles */
 @media (max-width: 768px) {
+  .campaign-page {
+    padding: var(--spacing-md) 0;
+  }
+  
   .campaign-page-container {
-    padding: var(--spacing-md);
+    padding: 0 var(--spacing-sm);
   }
   
   .campaign-header {
     padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
   }
   
   .campaign-title-section h1 {
     font-size: 2rem;
   }
   
+  .campaign-description {
+    font-size: 1rem;
+  }
+  
   .campaign-meta {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-md);
   }
   
   .campaign-tabs {
     flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+  
+  .tab-btn {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.9rem;
   }
   
   .tab-content {
@@ -326,9 +337,179 @@
   
   .overview-grid {
     grid-template-columns: 1fr;
+    gap: var(--spacing-md);
   }
   
-  .players-list {
-    grid-template-columns: 1fr;
+  .overview-tab h2,
+  .players-tab h2 {
+    font-size: 1.6rem;
+  }
+  
+  .overview-card {
+    padding: var(--spacing-md);
+  }
+  
+  .overview-card h3 {
+    font-size: 1.2rem;
+  }
+  
+  .players-tab {
+    padding: var(--spacing-md);
+  }
+  
+  .players-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+  
+  .players-header h2 {
+    font-size: 1.6rem;
+  }
+  
+  .player-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+  }
+  
+  .player-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .player-action-btn {
+    width: 100%;
+    padding: var(--spacing-sm);
+  }
+  
+  .dm-info,
+  .player-count,
+  .dm-badge,
+  .player-badge {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .campaign-page {
+    padding: var(--spacing-sm) 0;
+  }
+  
+  .campaign-page-container {
+    padding: 0 var(--spacing-xs);
+  }
+  
+  .campaign-header {
+    padding: var(--spacing-md);
+  }
+  
+  .campaign-title-section h1 {
+    font-size: 1.8rem;
+  }
+  
+  .campaign-description {
+    font-size: 0.9rem;
+  }
+  
+  .campaign-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+  
+  .dm-info,
+  .player-count,
+  .dm-badge,
+  .player-badge {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.8rem;
+  }
+  
+  .campaign-tabs {
+    padding: var(--spacing-xs);
+  }
+  
+  .tab-btn {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.8rem;
+  }
+  
+  .tab-content {
+    padding: var(--spacing-md);
+  }
+  
+  .overview-tab h2,
+  .players-tab h2 {
+    font-size: 1.4rem;
+  }
+  
+  .overview-card {
+    padding: var(--spacing-sm);
+  }
+  
+  .overview-card h3 {
+    font-size: 1.1rem;
+  }
+  
+  .players-tab {
+    padding: var(--spacing-sm);
+  }
+  
+  .players-header {
+    padding-bottom: var(--spacing-sm);
+  }
+  
+  .players-header h2 {
+    font-size: 1.4rem;
+  }
+  
+  .player-card {
+    padding: var(--spacing-sm);
+  }
+  
+  .player-name {
+    font-size: 1rem;
+  }
+  
+  .join-date {
+    font-size: 0.8rem;
+  }
+  
+  .player-action-btn {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.8rem;
+  }
+  
+  .no-players {
+    padding: var(--spacing-lg);
+    font-size: 0.9rem;
+  }
+  
+  .loading-container,
+  .error-container {
+    min-height: 300px;
+    padding: var(--spacing-lg);
+  }
+  
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .error-container h2 {
+    font-size: 1.4rem;
+  }
+  
+  .error-container button {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: 0.9rem;
+  }
+  
+  .error-message {
+    padding: var(--spacing-sm);
+    font-size: 0.9rem;
   }
 } 
