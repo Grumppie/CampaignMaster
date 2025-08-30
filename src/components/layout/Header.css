@@ -143,6 +143,42 @@
   letter-spacing: 0.5px;
 }
 
+.header-audio-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.header-audio-controls .volume-control {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background: transparent;
+}
+
+.header-audio-controls .volume-slider {
+  width: 100px;
+  background: transparent;
+}
+
+.header-audio-controls .toggle-btn {
+  background: transparent;
+  border: none;
+  padding: var(--spacing-xs);
+  color: var(--light-text);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.header-audio-controls .toggle-btn:hover {
+  color: var(--secondary-gold);
+  transform: scale(1.1);
+}
+
 @media (max-width: 768px) {
   .header-content {
     padding: var(--spacing-sm) var(--spacing-md);
@@ -212,7 +248,29 @@
   }
   
   .header-audio-controls {
-    display: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    align-items: center;
+    background: transparent;
+  }
+  
+  .header-audio-controls .volume-control {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+    background: transparent;
+  }
+  
+  .header-audio-controls .volume-slider {
+    width: 80px;
+    background: transparent;
+  }
+  
+  .header-audio-controls .toggle-btn {
+    padding: var(--spacing-xs);
+    font-size: 0.8rem;
+    background: transparent;
   }
 }
 

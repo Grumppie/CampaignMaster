@@ -398,6 +398,8 @@
   .theme-option {
     min-width: auto;
     max-width: none;
+    width: 100%;
+    padding: var(--spacing-lg);
   }
   
   .theme-actions {
@@ -410,19 +412,6 @@
   .delete-theme-btn {
     width: 100%;
     padding: var(--spacing-sm);
-  }
-  
-  .audio-controls {
-    flex-direction: column;
-    gap: var(--spacing-md);
-  }
-  
-  .volume-control {
-    width: 100%;
-  }
-  
-  .volume-slider {
-    width: 100%;
   }
   
   .setting-item {
@@ -465,7 +454,8 @@
   }
   
   .theme-option {
-    padding: var(--spacing-sm);
+    padding: var(--spacing-md);
+    width: 100%;
   }
   
   .theme-option h3 {
@@ -481,15 +471,6 @@
   .delete-theme-btn {
     padding: var(--spacing-xs) var(--spacing-sm);
     font-size: 0.8rem;
-  }
-  
-  .volume-label {
-    font-size: 0.9rem;
-  }
-  
-  .toggle-btn {
-    padding: var(--spacing-sm) var(--spacing-md);
-    font-size: 0.9rem;
   }
   
   .settings-theme-preview {

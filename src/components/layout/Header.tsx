@@ -72,7 +72,6 @@ export const Header: React.FC = () => {
         <nav className={`nav ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
           <Link to="/dashboard" className="nav-link" onClick={closeMobileMenu}>Dashboard</Link>
           <Link to="/campaigns" className="nav-link" onClick={closeMobileMenu}>Campaigns</Link>
-          <Link to="/campaigns/create" className="nav-link" onClick={closeMobileMenu}>Create Campaign</Link>
           <Link to="/achievements" className="nav-link" onClick={closeMobileMenu}>Achievements</Link>
           <Link to="/settings" className="nav-link" onClick={closeMobileMenu}>Settings</Link>
         </nav>

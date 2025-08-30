@@ -6,6 +6,10 @@
   flex-direction: column;
   gap: 10px;
   z-index: 1000;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* Theme-aware scrollbar */
@@ -46,13 +50,13 @@
   height: 50px;
   border-radius: 50%;
   border: 2px solid var(--accent-color);
-  background: var(--surface-color);
+  background: transparent;
   color: var(--accent-color);
   font-size: 1.2rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -61,29 +65,29 @@
 .audio-toggle-btn:hover,
 .volume-btn:hover,
 .volume-slider-btn:hover {
-  background: var(--accent-color);
-  color: var(--background-color);
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--accent-color);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px var(--accent-color);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
 }
 
 .audio-toggle-btn.playing {
-  background: linear-gradient(135deg, var(--accent-color), #f4d03f);
-  color: var(--background-color);
+  background: rgba(212, 175, 55, 0.2);
+  color: var(--accent-color);
   border-color: var(--accent-color);
-  box-shadow: 0 0 15px var(--accent-color);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
 }
 
 .volume-btn.muted {
-  background: rgba(255, 0, 0, 0.2);
+  background: rgba(255, 0, 0, 0.1);
   border-color: #ff4444;
   color: #ff4444;
 }
 
 .volume-btn.muted:hover {
-  background: rgba(255, 0, 0, 0.3);
+  background: rgba(255, 0, 0, 0.2);
   border-color: #ff6666;
-  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.3);
+  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.2);
 }
 
 .volume-controls {
@@ -94,17 +98,13 @@
   position: absolute;
   bottom: 60px;
   right: 0;
-  background: var(--surface-color);
+  background: rgba(26, 11, 46, 0.9);
   border: 2px solid var(--accent-color);
   border-radius: 12px;
   padding: 15px;
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(10px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  min-width: 120px;
+  min-width: 150px;
 }
 
 .volume-slider {
